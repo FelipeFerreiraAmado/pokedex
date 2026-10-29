@@ -1,0 +1,637 @@
+:root {
+  --casing: #d0283c;
+  --casing-luz: #e4505f;
+  --casing-sombra: #a81d2f;
+  --casing-escuro: #8f1424;
+  --lente: #3ba7f0;
+  --tecla: #1f6fb2;
+  --lcd-0: #d3dc8c;
+  --lcd-1: #9eae52;
+  --lcd-2: #4b6226;
+  --lcd-3: #213318;
+  --moldura: #e7eaed;
+  --grafite: #2e3338;
+  --amarelo: #f2c14e;
+  --fundo: #dce3e8;
+  --texto: #1b1d1f;
+  --fonte-ui: "M PLUS Rounded 1c", system-ui, "Segoe UI", sans-serif;
+  --fonte-lcd: "DotGothic16", "Courier New", monospace;
+  --pad: 26px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root { --fundo: #121619; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 40px 16px;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--fonte-ui);
+}
+
+.defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ---------- aparelho ---------- */
+
+.pokedex {
+  width: min(1040px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) 30px minmax(0, 1fr);
+  filter: drop-shadow(0 28px 36px rgba(60, 12, 20, 0.28));
+}
+
+.unidade {
+  position: relative;
+  padding: 22px var(--pad) var(--pad);
+  background: linear-gradient(165deg, var(--casing-luz) 0%, var(--casing) 30%, var(--casing) 70%, var(--casing-sombra) 100%);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.28), inset 0 -7px 0 rgba(0, 0, 0, 0.16);
+}
+
+.unidade-tela { border-radius: 26px 10px 10px 26px; }
+
+.unidade-dados {
+  display: flex;
+  flex-direction: column;
+  padding-top: 34px;
+  border-radius: 10px 26px 26px 10px;
+}
+
+.dobradica {
+  margin: 56px 0;
+  border-radius: 12px;
+  background:
+    linear-gradient(to bottom, transparent 31%, rgba(40, 4, 10, 0.55) 31% 33%, transparent 33% 67%, rgba(40, 4, 10, 0.55) 67% 69%, transparent 69%),
+    linear-gradient(90deg, #6a0e1a, #b52133 45%, #c42a3b 55%, #74101d);
+}
+
+/* ---------- topo: lente, LEDs de status e marca ---------- */
+
+.topo {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 18px;
+  min-height: 124px;
+  margin-bottom: 18px;
+}
+
+.lente {
+  grid-row: 1 / span 2;
+  position: relative;
+  width: 84px;
+  height: 84px;
+  border: 7px solid #f3f5f7;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #d6f0ff 0 7%, #73c4f7 16%, var(--lente) 34%, #1a6fb5 68%, #0d3f70 100%);
+  box-shadow: 0 0 0 3px var(--casing-escuro), inset 0 -8px 14px rgba(0, 0, 0, 0.35);
+}
+
+.lente::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 20px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  transform: rotate(-32deg);
+}
+
+body[data-api="carregando"] .lente { animation: lente-ativa 0.8s ease-in-out infinite alternate; }
+
+@keyframes lente-ativa {
+  to { box-shadow: 0 0 0 3px var(--casing-escuro), 0 0 26px 8px rgba(115, 196, 247, 0.8), inset 0 -8px 14px rgba(0, 0, 0, 0.2); }
+}
+
+.sinais { padding-top: 6px; }
+
+.leds { display: flex; gap: 10px; }
+
+.led {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--casing-escuro);
+  border-radius: 50%;
+  background: var(--cor);
+  opacity: 0.35;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+}
+
+.led-vermelho { --cor: #ff5a5a; }
+.led-amarelo { --cor: var(--amarelo); }
+.led-verde { --cor: #63d17a; }
+
+body[data-api="erro"] .led-vermelho,
+body[data-api="carregando"] .led-amarelo,
+body[data-api="ok"] .led-verde {
+  opacity: 1;
+  box-shadow: 0 0 10px 2px var(--cor), inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.status-api {
+  margin: 8px 0 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.marca {
+  grid-column: 2;
+  justify-self: end;
+  align-self: end;
+  margin: 0;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 0 var(--casing-escuro);
+}
+
+.degrau {
+  position: absolute;
+  left: calc(var(--pad) * -1);
+  right: calc(var(--pad) * -1);
+  bottom: -14px;
+  width: calc(100% + var(--pad) * 2);
+  height: 50px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.degrau path {
+  fill: none;
+  stroke: var(--casing-escuro);
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---------- tela LCD ---------- */
+
+.moldura {
+  position: relative;
+  padding: 28px 22px 22px;
+  border-radius: 14px;
+  background: var(--moldura);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.12);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 46px 100%, 0 calc(100% - 46px));
+}
+
+.moldura::before {
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin-left: -13px;
+  border-radius: 50%;
+  background: var(--casing);
+  box-shadow: 18px 0 0 var(--casing);
+}
+
+.lcd {
+  padding: 14px 14px 12px;
+  border-radius: 6px;
+  background-color: var(--lcd-0);
+  background-image:
+    linear-gradient(rgba(33, 51, 24, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 51, 24, 0.06) 1px, transparent 1px);
+  background-size: 3px 3px;
+  box-shadow: inset 0 0 0 2px rgba(33, 51, 24, 0.35), inset 0 4px 10px rgba(0, 0, 0, 0.28);
+  color: var(--lcd-3);
+  font-family: var(--fonte-lcd);
+  font-size: 16px;
+  font-synthesis: none;
+}
+
+.ficha {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  gap: 4px 16px;
+  padding-bottom: 12px;
+  border-bottom: 6px double var(--lcd-3);
+}
+
+.retrato {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 2px;
+}
+
+/* os sprites têm 96x96 com bastante borda transparente:
+   ampliamos 2x (escala inteira, sem borrar os pixels) e a janela recorta a borda */
+.janela {
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
+}
+
+.sprite {
+  display: block;
+  width: 192px;
+  height: 192px;
+  max-width: none;
+  margin: -32px;
+  image-rendering: pixelated;
+  filter: url(#tons-lcd);
+}
+
+.silhueta {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--lcd-2);
+  stroke-width: 4;
+  stroke-dasharray: 6 5;
+}
+
+.ficha-numero { margin: 0; }
+
+.dados { min-width: 0; padding-top: 6px; }
+
+.ficha-nome {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.ficha-categoria {
+  min-height: 1.2em;
+  margin: 4px 0 0;
+  color: var(--lcd-2);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.medidas {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 14px;
+  margin: 12px 0 0;
+}
+
+.medidas dt { color: var(--lcd-2); text-transform: uppercase; }
+.medidas dd { margin: 0; }
+
+.contagem {
+  margin: 10px 2px 4px;
+  color: var(--lcd-2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* a lista rola de linha em linha (8 linhas de 34px visíveis), como num Game Boy */
+.lista {
+  max-height: 272px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--lcd-2) transparent;
+}
+
+.lista button {
+  width: 100%;
+  display: grid;
+  height: 34px;
+  grid-template-columns: 1em 4.5em minmax(0, 1fr);
+  align-items: center;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lista li { scroll-snap-align: start; }
+
+.lista button::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-block: 6px solid transparent;
+}
+
+.lista button:hover { background: rgba(33, 51, 24, 0.12); }
+.lista button:focus-visible { outline: 3px solid var(--lcd-2); outline-offset: 1px; }
+
+.lista button[aria-current="true"] {
+  background: var(--lcd-3);
+  color: var(--lcd-0);
+}
+
+.lista button[aria-current="true"]::before { border-left-color: currentColor; }
+
+.item-numero { color: var(--lcd-2); }
+.lista button[aria-current="true"] .item-numero { color: var(--lcd-1); }
+
+.item-nome {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.aviso {
+  padding: 16px 6px 6px;
+  line-height: 1.4;
+}
+
+.aviso p { margin: 0 0 12px; }
+
+.tecla-lcd {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--lcd-3);
+  color: var(--lcd-0);
+  font: inherit;
+  cursor: pointer;
+}
+
+.tecla-lcd:focus-visible { outline: 3px solid var(--lcd-2); outline-offset: 2px; }
+
+.mensagem {
+  min-height: 3.2em;
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  border: 5px double var(--lcd-3);
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+.mensagem[data-tipo="erro"] {
+  background: var(--lcd-3);
+  color: var(--lcd-0);
+}
+
+/* ---------- botões e formulário ---------- */
+
+.controles {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.pilula {
+  min-width: 132px;
+  padding: 11px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--grafite);
+  color: #f1f3f5;
+  font: 800 13px/1 var(--fonte-ui);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.45), 0 3px 0 var(--casing-escuro);
+  cursor: pointer;
+}
+
+.pilula:hover:not(:disabled) { background: #3a4047; }
+
+.pilula:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.45), 0 1px 0 var(--casing-escuro);
+}
+
+.pilula:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.pilula.confirmando,
+.pilula.confirmando:hover {
+  background: var(--amarelo);
+  color: #2a1e00;
+}
+
+.visor {
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #1a2117;
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.7), 0 0 0 3px var(--casing-escuro);
+}
+
+.visor h2 {
+  margin: 0;
+  color: var(--lcd-0);
+  font-family: var(--fonte-lcd);
+  font-size: 24px;
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.formulario {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 6px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.formulario input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 2px solid var(--casing-escuro);
+  border-radius: 10px;
+  background: #f8f9fa;
+  color: var(--texto);
+  font: 500 16px var(--fonte-ui);
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.07);
+}
+
+.formulario input::placeholder { color: #6b7177; }
+
+.par {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.tecla {
+  padding: 13px 22px;
+  border: 0;
+  border-radius: 12px;
+  font: 800 15px/1 var(--fonte-ui);
+  cursor: pointer;
+}
+
+.tecla-primaria {
+  background: var(--tecla);
+  color: #fff;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.28), 0 0 0 3px var(--casing-escuro);
+}
+
+.tecla-primaria:hover:not(:disabled) { background: #2479c0; }
+.tecla-primaria:disabled { opacity: 0.6; cursor: progress; }
+
+.tecla-secundaria {
+  background: transparent;
+  color: #fff;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85);
+}
+
+.tecla:active:not(:disabled) { transform: translateY(2px); }
+
+.pilula:focus-visible,
+.tecla:focus-visible,
+.formulario input:focus-visible {
+  outline: 3px solid var(--amarelo);
+  outline-offset: 3px;
+}
+
+/* ---------- monitor de chamadas: cada tecla é um endpoint do PokemonResource ---------- */
+
+.monitor {
+  margin-top: auto;
+  padding-top: 30px;
+}
+
+.monitor-titulo {
+  margin: 0 0 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.chamadas {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 10px;
+  border-radius: 12px;
+  background: #1a2117;
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.7), 0 0 0 3px var(--casing-escuro);
+  list-style: none;
+}
+
+.chamada {
+  display: grid;
+  grid-template-columns: 4.9rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 10px 4px 4px;
+  border-radius: 8px;
+  color: var(--lcd-1);
+  font-family: var(--fonte-lcd);
+  font-size: 16px;
+  font-synthesis: none;
+}
+
+.verbo {
+  padding: 6px 0 5px;
+  border-radius: 6px;
+  background: var(--tecla);
+  color: #fff;
+  font: 800 12px/1 var(--fonte-ui);
+  letter-spacing: 0.08em;
+  text-align: center;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.35);
+}
+
+.caminho {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resultado { min-width: 3ch; text-align: right; }
+
+.chamada.ultima { background: rgba(211, 220, 140, 0.08); color: var(--lcd-0); }
+.chamada[data-falha="true"] .resultado { color: var(--amarelo); }
+
+.chamada.ativa .verbo {
+  background: #5cb8f7;
+  color: #0b2740;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.2), 0 0 12px 2px rgba(92, 184, 247, 0.75);
+}
+
+.endereco-api {
+  margin: 14px 0 0;
+  color: #fff;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.endereco-api code { font-family: var(--fonte-lcd); font-size: 16px; }
+
+/* ---------- telas menores: aparelho aberto na vertical ---------- */
+
+@media (max-width: 860px) {
+  body { place-items: start center; padding: 24px 16px; }
+
+  .pokedex {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 26px auto;
+  }
+
+  .unidade-tela { border-radius: 26px 26px 10px 10px; }
+  .unidade-dados { padding-top: 26px; border-radius: 10px 10px 26px 26px; }
+
+  .dobradica {
+    margin: 0 44px;
+    background:
+      linear-gradient(to right, transparent 31%, rgba(40, 4, 10, 0.55) 31% 33%, transparent 33% 67%, rgba(40, 4, 10, 0.55) 67% 69%, transparent 69%),
+      linear-gradient(180deg, #6a0e1a, #b52133 45%, #c42a3b 55%, #74101d);
+  }
+}
+
+@media (max-width: 480px) {
+  :root { --pad: 16px; }
+
+  .unidade { padding-top: 18px; }
+  .topo { min-height: 108px; column-gap: 14px; }
+  .lente { width: 68px; height: 68px; border-width: 6px; }
+  .marca { font-size: 23px; }
+
+  .moldura {
+    padding: 24px 10px 12px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 34px 100%, 0 calc(100% - 34px));
+  }
+
+  .lcd { padding: 10px 10px 10px; }
+  .ficha { grid-template-columns: 96px minmax(0, 1fr); gap: 4px 12px; }
+  .janela { width: 96px; height: 96px; }
+  .sprite { width: 144px; height: 144px; margin: -24px; }
+  .ficha-nome { font-size: 24px; }
+  .chamada { gap: 10px; }
+  .pilula { flex: 1; min-width: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

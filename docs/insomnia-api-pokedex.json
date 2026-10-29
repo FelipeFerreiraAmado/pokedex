@@ -1,0 +1,162 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-10-29T20:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v10.0.0",
+  "resources": [
+    {
+      "_id": "wrk_api_pokedex",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "API Pokedex",
+      "description": "Requisições da API Restful Pokedex (Spring Boot)",
+      "scope": "collection",
+      "created": 1761768000000,
+      "modified": 1761768000000
+    },
+    {
+      "_id": "env_api_pokedex_base",
+      "_type": "environment",
+      "parentId": "wrk_api_pokedex",
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1761768000000,
+      "created": 1761768000000,
+      "modified": 1761768000000
+    },
+    {
+      "_id": "req_pokedex_findall",
+      "_type": "request",
+      "parentId": "wrk_api_pokedex",
+      "name": "findAll",
+      "description": "Lista todos os pokémons. Esperado: 200 OK",
+      "method": "GET",
+      "url": "http://localhost:8080/pokedex",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1761768000000,
+      "modified": 1761768000000
+    },
+    {
+      "_id": "req_pokedex_findbycodigo",
+      "_type": "request",
+      "parentId": "wrk_api_pokedex",
+      "name": "findByCodigo",
+      "description": "Busca um pokémon pelo código (troque o 1 da URI). Esperado: 200 OK ou 404 Not Found",
+      "method": "GET",
+      "url": "http://localhost:8080/pokedex/1",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -4,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1761768000000,
+      "modified": 1761768000000
+    },
+    {
+      "_id": "req_pokedex_save",
+      "_type": "request",
+      "parentId": "wrk_api_pokedex",
+      "name": "save",
+      "description": "Cadastra um pokémon. Esperado: 201 Created ou 400 Bad Request",
+      "method": "POST",
+      "url": "http://localhost:8080/pokedex",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Bulbasaur\",\n  \"altura\": 0.7,\n  \"peso\": 6.9,\n  \"categoria\": \"Semente\",\n  \"dataDaCaptura\": \"2025-02-27\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -3,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1761768000000,
+      "modified": 1761768000000
+    },
+    {
+      "_id": "req_pokedex_update",
+      "_type": "request",
+      "parentId": "wrk_api_pokedex",
+      "name": "update",
+      "description": "Atualiza o pokémon do código informado na URI. Esperado: 201 Created ou 400 Bad Request",
+      "method": "PUT",
+      "url": "http://localhost:8080/pokedex/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Ivysaur\",\n  \"altura\": 1.0,\n  \"peso\": 13.0,\n  \"categoria\": \"Semente\",\n  \"dataDaCaptura\": \"2025-02-27\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -2,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1761768000000,
+      "modified": 1761768000000
+    },
+    {
+      "_id": "req_pokedex_delete",
+      "_type": "request",
+      "parentId": "wrk_api_pokedex",
+      "name": "delete",
+      "description": "Exclui o pokémon do código informado na URI. Esperado: 204 No Content ou 404 Not Found",
+      "method": "DELETE",
+      "url": "http://localhost:8080/pokedex/1",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "created": 1761768000000,
+      "modified": 1761768000000
+    }
+  ]
+}

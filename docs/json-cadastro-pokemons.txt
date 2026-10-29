@@ -1,0 +1,89 @@
+JSON para cadastro de novos pokémons
+Insomnia: verbo POST - http://localhost:8080/pokedex - Body JSON
+(copie um bloco por vez e clique em Send; resposta esperada: 201 Created)
+altura em metros, peso em kg, dataDaCaptura no formato AAAA-MM-DD (não pode ser futura)
+
+{
+  "nome": "Bulbasaur",
+  "altura": 0.7,
+  "peso": 6.9,
+  "categoria": "Semente",
+  "dataDaCaptura": "2025-02-27"
+}
+
+{
+  "nome": "Charmander",
+  "altura": 0.6,
+  "peso": 8.5,
+  "categoria": "Lagarto",
+  "dataDaCaptura": "2025-03-14"
+}
+
+{
+  "nome": "Squirtle",
+  "altura": 0.5,
+  "peso": 9.0,
+  "categoria": "Tartaruguinha",
+  "dataDaCaptura": "2025-04-02"
+}
+
+{
+  "nome": "Pikachu",
+  "altura": 0.4,
+  "peso": 6.0,
+  "categoria": "Rato",
+  "dataDaCaptura": "2025-05-20"
+}
+
+{
+  "nome": "Eevee",
+  "altura": 0.3,
+  "peso": 6.5,
+  "categoria": "Evolução",
+  "dataDaCaptura": "2025-07-08"
+}
+
+{
+  "nome": "Gengar",
+  "altura": 1.5,
+  "peso": 40.5,
+  "categoria": "Sombra",
+  "dataDaCaptura": "2025-10-31"
+}
+
+{
+  "nome": "Snorlax",
+  "altura": 2.1,
+  "peso": 460.0,
+  "categoria": "Dorminhoco",
+  "dataDaCaptura": "2026-01-15"
+}
+
+{
+  "nome": "Mewtwo",
+  "altura": 2.0,
+  "peso": 122.0,
+  "categoria": "Genético",
+  "dataDaCaptura": "2026-06-06"
+}
+
+
+JSONs INVÁLIDOS (para testar o Bean Validation - resposta esperada: 400 Bad Request)
+
+nome em branco e peso negativo:
+{
+  "nome": "",
+  "altura": 0.4,
+  "peso": -6.0,
+  "categoria": "Rato",
+  "dataDaCaptura": "2025-05-20"
+}
+
+data da captura no futuro:
+{
+  "nome": "Mew",
+  "altura": 0.4,
+  "peso": 4.0,
+  "categoria": "Nova Espécie",
+  "dataDaCaptura": "2099-01-01"
+}

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pokédex</title>
+  <meta name="description" content="Front-end da API Restful Pokedex: lista, registra, edita e exclui pokémons.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23f3f5f7' stroke='%23222' stroke-width='3'/%3E%3Cpath d='M2 16a14 14 0 0 1 28 0z' fill='%23d0283c' stroke='%23222' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%23f3f5f7' stroke='%23222' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-api="carregando">
+  <!-- Filtro que pinta qualquer sprite nos 4 tons de verde da tela do Game Boy -->
+  <svg class="defs" aria-hidden="true" focusable="false" width="0" height="0">
+    <filter id="tons-lcd" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0"/>
+      <feComponentTransfer>
+        <feFuncR type="discrete" tableValues="0.129 0.294 0.620 0.827"/>
+        <feFuncG type="discrete" tableValues="0.200 0.384 0.682 0.863"/>
+        <feFuncB type="discrete" tableValues="0.094 0.149 0.322 0.549"/>
+      </feComponentTransfer>
+    </filter>
+  </svg>
+
+  <main class="pokedex">
+    <section class="unidade unidade-tela" aria-labelledby="marca">
+      <header class="topo">
+        <div class="lente" aria-hidden="true"></div>
+        <div class="sinais">
+          <div class="leds" aria-hidden="true">
+            <span class="led led-vermelho"></span>
+            <span class="led led-amarelo"></span>
+            <span class="led led-verde"></span>
+          </div>
+          <p class="status-api" id="status-api">Conectando à API…</p>
+        </div>
+        <h1 class="marca" id="marca">Pokédex</h1>
+        <svg class="degrau" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M0 37 H40 L52 3 H100"/>
+        </svg>
+      </header>
+
+      <div class="moldura">
+        <div class="lcd">
+          <article class="ficha" aria-label="Ficha do pokémon selecionado">
+            <div class="retrato">
+              <div class="janela">
+                <img class="sprite" id="sprite" alt="" width="192" height="192" hidden>
+                <svg class="silhueta" id="silhueta" viewBox="-14 -14 92 92" aria-hidden="true" focusable="false">
+                  <circle cx="32" cy="32" r="26"/>
+                  <path d="M6 32 H24 M40 32 H58"/>
+                  <circle cx="32" cy="32" r="7"/>
+                </svg>
+              </div>
+              <p class="ficha-numero" id="ficha-numero">No.---</p>
+            </div>
+            <div class="dados">
+              <h2 class="ficha-nome" id="ficha-nome">-----</h2>
+              <p class="ficha-categoria" id="ficha-categoria"></p>
+              <dl class="medidas">
+                <dt>Alt</dt><dd id="ficha-altura">--</dd>
+                <dt>Peso</dt><dd id="ficha-peso">--</dd>
+                <dt>Captura</dt><dd id="ficha-captura">--</dd>
+              </dl>
+            </div>
+          </article>
+
+          <p class="contagem" id="contagem">Registrados 000</p>
+          <ol class="lista" id="lista" aria-label="Pokémons registrados" hidden></ol>
+          <div class="aviso" id="aviso">
+            <p id="aviso-texto">Carregando registros da API…</p>
+            <button class="tecla-lcd" id="tentar" type="button" hidden>Tentar de novo</button>
+          </div>
+          <p class="mensagem" id="mensagem" role="status">Escolha um pokémon na lista (↑ ↓) ou registre um novo pelo formulário.</p>
+        </div>
+      </div>
+
+      <div class="controles">
+        <button class="pilula" id="editar" type="button" disabled>Editar</button>
+        <button class="pilula" id="excluir" type="button" disabled>Excluir</button>
+      </div>
+    </section>
+
+    <div class="dobradica" aria-hidden="true"></div>
+
+    <section class="unidade unidade-dados" aria-labelledby="titulo-form">
+      <div class="visor">
+        <h2 id="titulo-form">Registrar pokémon</h2>
+      </div>
+
+      <form class="formulario" id="formulario" autocomplete="off">
+        <div class="campo">
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" required maxlength="100" pattern=".*\S.*" placeholder="ex.: Bulbasaur">
+        </div>
+        <div class="campo">
+          <label for="categoria">Categoria</label>
+          <input id="categoria" name="categoria" required maxlength="100" pattern=".*\S.*" placeholder="ex.: Semente">
+        </div>
+        <div class="par">
+          <div class="campo">
+            <label for="altura">Altura (m)</label>
+            <input id="altura" name="altura" type="number" required min="0.01" max="999.99" step="0.01" inputmode="decimal">
+          </div>
+          <div class="campo">
+            <label for="peso">Peso (kg)</label>
+            <input id="peso" name="peso" type="number" required min="0.01" max="9999.99" step="0.01" inputmode="decimal">
+          </div>
+        </div>
+        <div class="campo">
+          <label for="data">Data da captura</label>
+          <input id="data" name="data" type="date" required>
+        </div>
+        <div class="acoes">
+          <button class="tecla tecla-primaria" id="enviar" type="submit">Registrar</button>
+          <button class="tecla tecla-secundaria" id="cancelar" type="button" hidden>Cancelar edição</button>
+        </div>
+      </form>
+
+      <section class="monitor" aria-labelledby="titulo-monitor">
+        <h3 class="monitor-titulo" id="titulo-monitor">Chamadas à API</h3>
+        <ul class="chamadas">
+          <li class="chamada" data-rota="listar"><span class="verbo">GET</span><span class="caminho">/pokedex</span><span class="resultado">---</span></li>
+          <li class="chamada" data-rota="buscar"><span class="verbo">GET</span><span class="caminho">/pokedex/{codigo}</span><span class="resultado">---</span></li>
+          <li class="chamada" data-rota="registrar"><span class="verbo">POST</span><span class="caminho">/pokedex</span><span class="resultado">---</span></li>
+          <li class="chamada" data-rota="salvar"><span class="verbo">PUT</span><span class="caminho">/pokedex/{codigo}</span><span class="resultado">---</span></li>
+          <li class="chamada" data-rota="excluir"><span class="verbo">DELETE</span><span class="caminho">/pokedex/{codigo}</span><span class="resultado">---</span></li>
+        </ul>
+        <p class="endereco-api">API: <code id="url-api"></code></p>
+      </section>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

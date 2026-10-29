@@ -1,0 +1,23 @@
+JSON para atualização de um pokémon
+Insomnia: verbo PUT - http://localhost:8080/pokedex/x (onde x é o código de um pokémon já cadastrado) - Body JSON
+(resposta esperada: 201 Created; dados inválidos: 400 Bad Request)
+
+Exemplo: Bulbasaur (código 1) evoluiu para Ivysaur
+
+{
+  "nome": "Ivysaur",
+  "altura": 1.0,
+  "peso": 13.0,
+  "categoria": "Semente",
+  "dataDaCaptura": "2025-02-27"
+}
+
+Exemplo: Charmander (código 2) evoluiu para Charmeleon
+
+{
+  "nome": "Charmeleon",
+  "altura": 1.1,
+  "peso": 19.0,
+  "categoria": "Chama",
+  "dataDaCaptura": "2025-03-14"
+}
