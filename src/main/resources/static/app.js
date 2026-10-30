@@ -1,6 +1,9 @@
 // Pokédex: front-end que consome a API Restful do projeto pokedex (PokemonResource).
-// API publicada no Render. Para testar com a API rodando local, troque por http://localhost:8080/pokedex
-const API_URL = "https://pokedex-rm572567.onrender.com/pokedex";
+// Quando a página é servida pela própria API (Render ou localhost:8080), usa o mesmo endereço.
+// Aberta direto do arquivo, usa a API publicada no Render.
+const API_URL = location.protocol.startsWith("http")
+  ? location.origin + "/pokedex"
+  : "https://pokedex-rm572567.onrender.com/pokedex";
 
 // Os sprites são só ilustração e vêm da PokeAPI (pokeapi.co).
 // Se o nome não for de um pokémon conhecido (ou se estiver sem internet), aparece a silhueta.
@@ -430,5 +433,6 @@ botaoTentar.addEventListener("click", () => carregar());
 form.elements.data.max = hoje();
 form.elements.data.defaultValue = hoje();
 $("#url-api").textContent = API_URL;
+$("#url-api").href = API_URL;
 carregar();
 carregarEspecies();

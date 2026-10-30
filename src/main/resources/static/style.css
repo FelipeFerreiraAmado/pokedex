@@ -587,7 +587,17 @@ body[data-api="ok"] .led-verde {
   overflow-wrap: anywhere;
 }
 
-.endereco-api code { font-family: var(--fonte-lcd); font-size: 16px; }
+.endereco-api a {
+  color: #fff;
+  font-family: var(--fonte-lcd);
+  font-size: 16px;
+  text-underline-offset: 3px;
+}
+
+.endereco-api a:focus-visible {
+  outline: 3px solid var(--amarelo);
+  outline-offset: 3px;
+}
 
 /* ---------- telas menores: aparelho aberto na vertical ---------- */
 
