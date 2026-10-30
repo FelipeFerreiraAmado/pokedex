@@ -2,6 +2,9 @@
 
 API Restful para cadastro de pokémons (uma pokédex), desenvolvida nas aulas de Domain Driven Design Using Java (A39 a A44): Spring Boot, Oracle, Bean Validation, CORS e deploy no Render.
 
+- Repositório: https://github.com/FelipeFerreiraAmado/pokedex
+- Deploy (Render): https://pokedex-rm572567.onrender.com/pokedex
+
 Projeto gerado no Spring Initializr: Maven, Java 21, Spring Boot 4.1.1, pacote `br.com.fiap`, com as dependências Spring Boot DevTools, Spring Web, Oracle Driver e Validation.
 
 ## Estrutura
@@ -59,7 +62,7 @@ Sem as variáveis de ambiente, a API sobe, mas cada chamada falha com "Variávei
 
 ## Front-end
 
-A pasta [`front-end`](front-end) tem uma pokédex em HTML, CSS e JavaScript que consome a API: lista, cadastra, edita e exclui pokémons. Com a API rodando, abra o `front-end/index.html` no navegador. O endereço da API fica na constante `API_URL`, no começo do `app.js`.
+A pasta [`front-end`](front-end) tem uma pokédex em HTML, CSS e JavaScript que consome a API: lista, cadastra, edita e exclui pokémons. Basta abrir o `front-end/index.html` no navegador: ele usa a API publicada no Render. Para usar a API rodando local, troque a constante `API_URL`, no começo do `app.js`, por `http://localhost:8080/pokedex`.
 
 ## Build
 
@@ -79,4 +82,4 @@ $env:DB_URL="jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL"; $env:DB_USER="seu_
 1. Crie um repositório no GitHub e envie o projeto (`git init`, `git add .`, `git commit -m "first commit"`, `git branch -M main`, `git remote add origin ...`, `git push -u origin main`).
 2. No Render, crie um **Web Service** a partir do repositório (ele usa o `Dockerfile` do projeto) e escolha a instância gratuita.
 3. Em **Environment Variables**, cadastre `DB_URL`, `DB_USER` e `DB_PASSWORD`.
-4. Depois do deploy, troque `API_URL` no `front-end/app.js` pela URL do Render seguida de `/pokedex`.
+4. O `API_URL` do `front-end/app.js` aponta para a URL do Render seguida de `/pokedex`.

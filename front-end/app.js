@@ -1,6 +1,6 @@
 // Pokédex: front-end que consome a API Restful do projeto pokedex (PokemonResource).
-// Depois do deploy no Render, troque API_URL pela URL publicada, ex.: https://seu-servico.onrender.com/pokedex
-const API_URL = "http://localhost:8080/pokedex";
+// API publicada no Render. Para testar com a API rodando local, troque por http://localhost:8080/pokedex
+const API_URL = "https://pokedex-rm572567.onrender.com/pokedex";
 
 // Os sprites são só ilustração e vêm da PokeAPI (pokeapi.co).
 // Se o nome não for de um pokémon conhecido (ou se estiver sem internet), aparece a silhueta.
